@@ -1,0 +1,67 @@
+paths:
+  /random-word:
+    post:
+      tags:
+        - Words
+      summary: get a random word
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Random word Properties
+          description: Parameters to specify custom words properties
+          required: false
+          schema:
+            $ref: "#/definitions/RandomWordParams"
+      responses:
+        200:
+          description: An object with query results and errors
+          schema:
+            $ref: "#/definitions/ResponseObject"
+definitions:
+  RandomWordParams:
+    type: object
+    properties:
+      word_count:
+        type: integer
+        default: 10
+        maximum: 100
+      lang:
+        type: string
+        default: null
+      length:
+        type: integer
+        default: 8
+      min_length:
+        type: integer
+      max_length:
+        type: integer
+      match:
+        type: string
+        default: "^[a-zA-Z0-9]+$"
+  ResponseErrors:
+    type: object
+    properties:
+      code:
+        type: string
+        default: "ERR_CODE"
+      message:
+        type: string
+        default: "ERR_MESSAGE"
+  ResponseObject:
+    type: object
+    properties:
+      errors:
+        type: array
+        items:
+          $ref: "#/definitions/ResponseErrors"
+      params:
+        $ref: "#/definitions/RandomWordParams"
+      result:
+        type: array
+        default:
+          - word 1
+          - word 2
+          - word 3
+        items:
+          type: string
